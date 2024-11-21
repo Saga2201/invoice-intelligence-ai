@@ -13,7 +13,8 @@ pip install -r requirements.txt
 ## ENV
 
 ```
-Sample
+KEY="2*******************B"
+AZURE_DOC_INTELLIGENCE_ENDPOINT="https://sample-doc-ai.cognitiveservices.azure.com/"
 ```
 
 ### Run the BE
