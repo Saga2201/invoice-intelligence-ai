@@ -9,14 +9,17 @@ import os
 
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import DocumentAnalysisClient
+from dotenv import load_dotenv
+
+load_dotenv()
 
 """
 Remember to remove the key from your code when you're done, and never post it publicly. For production, use
 secure methods to store and access your credentials. For more information, see 
 https://docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-security?tabs=command-line%2Ccsharp#environment-variables-and-application-configuration
 """
-endpoint = "https://thinkwik-doc-ai.cognitiveservices.azure.com/"
-key = "2NDCaUtod0DtBCiIEzefDHSwWGpWYCgGXFQwDye4ZCOBibNw56uBJQQJ99AKACGhslBXJ3w3AAALACOG6llB"
+endpoint = os.environ.get("AZURE_DOC_INTELLIGENCE_ENDPOINT")
+key = os.environ.get("KEY")
 
 # sample document
 doc = "Invoice_0526-PLAIN-page-001.jpg"
