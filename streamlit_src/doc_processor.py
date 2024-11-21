@@ -23,7 +23,6 @@ def call_backend_api(uploaded_file, secret_key):
     return response
 
 
-# Button to submit the information and call the API
 if st.button('Submit'):
     if uploaded_file is not None and secret_key == "Think@2024":
         # Call the API with the uploaded file and secret key
@@ -32,18 +31,39 @@ if st.button('Submit'):
         # Check the response from your API
         if response.status_code == 200:
             st.success("File and Secret Key Submitted Successfully!")
+
+            # Ensure the CSV file is created if it does not exist and write the API response to it
+            api_response = response.json()
+            csv_filename = "api_response.csv"
+            json_to_csv(json_data=api_response,
+                        csv_filename=csv_filename)
+
             # Add download button for the CSV file
-            with open("api_response.csv", "rb") as file:
-                st.download_button(
-                    label="Download CSV",
-                    data=file,
-                    file_name="api_response.csv",
-                    mime="text/csv"
-                )
-            # Display the API response
-            api_response = response.json()  # Convert response to JSON
+            try:
+                with open(csv_filename, "rb") as file:
+                    st.download_button(
+                        label="Download Order CSV",
+                        data=file,
+                        file_name=csv_filename,
+                        mime="text/csv"
+                    )
+            except FileNotFoundError:
+                st.error("Failed to create the CSV file for download.")
+
+            # Add download button for the CSV file
+            try:
+                with open("items.csv", "rb") as item_file:
+                    st.download_button(
+                        label="Download Items CSV",
+                        data=item_file,
+                        file_name="items.csv",
+                        mime="text/csv"
+                    )
+            except FileNotFoundError:
+                st.error("Failed to create the CSV file for download.")
+
+                # Display the API response
             st.write("API Response:")
-            json_to_csv(json_data=api_response, csv_filename="api_response.csv")
             st.json(api_response)  # Nicely display the JSON response
         else:
             st.error("Failed to submit. Please try again.")
